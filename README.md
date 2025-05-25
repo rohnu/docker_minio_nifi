@@ -1,4 +1,4 @@
-# docker_minio_nifi
+# Single Node Single Drive - docker_minio_nifi
 
 This repository contains a secure **Docker Compose** setup for deploying **MinIO** and **Apache NiFi** using **self-signed TLS certificates**.
 
