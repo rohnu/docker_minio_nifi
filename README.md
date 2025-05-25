@@ -68,11 +68,11 @@ MinIO: server.crt and server.key files to /opt/minio/certs/CAs
 Rename server.crt as public.crt
 Rename server.key as private.key
 
-###Create minio-keystore.sh (place it inside your image at /opt/minio/certs/)
+##Create minio-keystore.sh (place it inside your image at /opt/minio/certs/)
 
 The below script will be used in the docker compose file to trust the minio server from Nifi 
 #!/bin/bash
-## Import MinIO cert into Java truststore if not already imported
+ Import MinIO cert into Java truststore if not already imported
 if ! keytool -list -cacerts -storepass changeit | grep -q "minio-edms"; then
         echo "Importing MinIO SSL cert into Java truststore..."
         keytool -importcert -alias minio-edms -file /opt/minio/certs/CAs/public.crt -cacerts -storepass changeit -noprompt
