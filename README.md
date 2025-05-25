@@ -26,6 +26,7 @@ Both MinIO and NiFi benefit from TLS in these ways:
 - Enable mutual authentication
 - Comply with secure data pipeline practices
 
+  
 ▶️ **Reference Video**: [MinIO TLS & Docker - YouTube](https://www.youtube.com/watch?v=Mc_sWPaTHO8)
 
 ---
@@ -105,3 +106,7 @@ docker compose up -d nifi
 🧪 Open the following URLs in your browser (after uploading the .pfx cert):
 	•	MinIO: https://:9001
 	•	NiFi: https://:9443/nifi
+
+📌 Notes
+	•	Ensure TLS certs are rotated every 12–24 months.
+	•	NiFi requires proper INITIAL_ADMIN_IDENTITY in authorizers.xml for the first secure login.
