@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  minio:
+    container_name: minio
+    image: minio/minio:RELEASE.2025-03-12T18-04-18Z
+    command: server /data --console-address ":9001" --address ":443" --certs-dir /opt/minio/certs/CAs/
+    ports:
+      - "443:443"
+      - "9000:9000"
+      - "9001:9001"
+    user: root
+    hostname: EDMSServer1 #Change the hostname to production server’s hostname
+    environment:
+      MINIO_ROOT_USER: admin #Change the username
+      MINIO_ROOT_PASSWORD: //password// #Change the password
+    volumes:
+      - /mnt/c/:/data #Change the mount to external drive used for storage
+      - /opt/minio/certs:/opt/minio/certs
+    networks:
+      - minio_nifi_network
+
+  nifi:
+    container_name: nifi
+    image: apache/nifi:1.28.1
+    ports:
+      - "9443:9443"
+    user: root
+    hostname: nifi-node #Change the hostname to production server’s hostname
+    environment:
+      - SINGLE_USER_CREDENTIALS_USERNAME=admin #Change the username
+      - SINGLE_USER_CREDENTIALS_PASSWORD=//password// #Change the password
+      - NIFI_WEB_HTTPS_HOST=0.0.0.0
+      - NIFI_WEB_HTTPS_PORT=9443
+      - NIFI_WEB_PROXY_HOST=nifi-node:9443
+      - AUTH=tls
+      - KEYSTORE_PATH=/opt/nifi/certs/server.jks
+      - KEYSTORE_TYPE=jks
+      - KEYSTORE_PASSWORD=//password// #Change the password used while creating certs
+      - TRUSTSTORE_PATH=/opt/nifi/certs/truststore.jks
+      - TRUSTSTORE_PASSWORD=//password// #Change the password used while creating certs
+      - TRUSTSTORE_TYPE=jks
+      - NIFI_WEB_PROXY_CONTEXT_PATH=/nifi
+      - NIFI_SENSITIVE_PROPS_KEY=dXn18Eh2EP1zB1Lux/p9MHv9F4PHG9Tt
+      - NIFI_SECURITY_USER_AUTHORIZER=managed-authorizer
+      - INITIAL_ADMIN_IDENTITY=EMAILADDRESS=admin@example.com, CN=admin, OU=NIFI, O=TerranearPMC, L=Chicago, ST=Illinois, C=US #Change the identity used while creating certs
+      - NIFI_SECURITY_IDENTITY_MAPPING_PATTERN_DN=.*CN=([^,]+),.*
+      - NIFI_SECURITY_IDENTITY_MAPPING_VALUE_DN=$$1
+      - JAVA_OPTS=-Djavax.net.ssl.trustStore=/opt/nifi/certs/truststore.jks -Djavax.net.ssl.trustStorePassword=3Sky*TPMC2025 #Change the password used while creating certs
+    entrypoint:
+      - "/bin/bash"
+      - "-c"
+      - "/opt/minio/certs/minio-keystore.sh; ../scripts/start.sh"
+    volumes:
+      - /mnt/blob/:/source_data #Change the mount to P drive used for source file
+      - /mnt/c/:/data #Change the mount to external drive used for storage
+      - /opt/minio/certs:/opt/minio/certs #Add Minio certs and jks file into Nifi
+      - /opt/nifi/lib/mssql-jdbc-12.10.0.jre11.jar:/opt/nifi/nifi-current/lib/mssql-jdbc-12.10.0.jre11.jar #Add MS-SQL driver jar file or any other libraries/jars using this method
+      - /opt/nifi/certs:/opt/nifi/certs
+      - nifi_conf:/opt/nifi/nifi-current/conf
+      - nifi_extensions:/opt/nifi/nifi-current/extensions
+      - nifi_database_repository:/opt/nifi/nifi-current/database_repository
+      - nifi_flowfile_repository:/opt/nifi/nifi-current/flowfile_repository
+      - nifi_content_repository:/opt/nifi/nifi-current/content_repository
+      - nifi_provenance_repository:/opt/nifi/nifi-current/provenance_repository
+      - nifi_state:/opt/nifi/nifi-current/state
+      - nifi_logs:/opt/nifi/nifi-current/logs
+
+
+volumes:
+  nifi_conf:
+  nifi_content_repository:
+  nifi_extensions:
+  nifi_database_repository:
+  nifi_flowfile_repository:
+  nifi_provenance_repository:
+  nifi_logs:
+  nifi_state:
+
+
+networks:
+  minio_nifi_network:
+    external: true
