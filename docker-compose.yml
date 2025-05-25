@@ -10,7 +10,7 @@ services:
       - "9000:9000"
       - "9001:9001"
     user: root
-    hostname: EDMSServer1 #Change the hostname to production server’s hostname
+    hostname: node1 #Change the hostname to production server’s hostname
     environment:
       MINIO_ROOT_USER: admin #Change the username
       MINIO_ROOT_PASSWORD: //password// #Change the password
@@ -26,7 +26,7 @@ services:
     ports:
       - "9443:9443"
     user: root
-    hostname: nifi-node #Change the hostname to production server’s hostname
+    hostname: node1 #Change the hostname to production server’s hostname
     environment:
       - SINGLE_USER_CREDENTIALS_USERNAME=admin #Change the username
       - SINGLE_USER_CREDENTIALS_PASSWORD=//password// #Change the password
