@@ -2,6 +2,9 @@
 
 This repository contains a secure **Docker Compose** setup for deploying **MinIO** and **Apache NiFi** using **self-signed TLS certificates**.
 
+![image](https://github.com/user-attachments/assets/c9835ee6-44ef-4764-a89d-98a29233a4ba)
+
+
 ---
 
 ## ✅ Features
