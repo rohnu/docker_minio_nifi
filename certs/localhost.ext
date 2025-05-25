@@ -1,0 +1,9 @@
+#Create a Config File for the Certificate (SAN Support)
+#Create a file localhost.ext with the following content:
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectAltName = @alt_names
+[alt_names]
+DNS.1 = <FQDN or HOSTNAME>
+IP.1=<X.X.X.X>
