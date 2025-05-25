@@ -58,7 +58,8 @@ IP.1  = <X.X.X.X>
 
 Sign with CA:
 
-openssl x509 -req -in server.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out server.crt -days 500 -sha256 -extfile server.ext
+openssl x509 -req -in server.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out server.crt -days 500 -sha256 -extfile localhost.ext
+openssl x509 -in rootCA.pem -text -noout
 
 Step 3: Create PKCS12 & JKS for NiFi
 
