@@ -10,7 +10,7 @@ This repository contains a secure **Docker Compose** setup for deploying **MinIO
 - 🔁 PKCS#12 → JKS certificate support for NiFi
 - 📦 JDBC driver integration (MS SQL Server ready)
 - 🛡️ Initial admin identity for secure NiFi access
-- 🔗 Custom Docker network: `minio_nifi_network`
+- 🔗 Custom Docker network: `minio_nifi_network` for Single Node Single Drive
 
 ---
 
